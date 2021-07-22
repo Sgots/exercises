@@ -27,16 +27,17 @@ public class LoadTestData {
 
     private void loadUsers() {
 
-        repository.save(loadUser("Employee",
+        repository.save(loadUser(1,"Employee",
                 LocalDate.now()));
-        repository.save(loadUser("Customer",
+        repository.save(loadUser(2,"Customer",
                 LocalDate.now()));
-        repository.save(loadUser("Affiliate",
+        repository.save(loadUser(3,"Affiliate",
                 LocalDate.now()));
     }
 
-    private Account loadUser(String type, LocalDate localDate) {
+    private Account loadUser(Integer userid, String type, LocalDate localDate) {
         Account account = new Account();
+        account.setAccountId(userid);
         account.setUserType(type);
         account.setJoinDate(localDate);
 

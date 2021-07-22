@@ -17,6 +17,8 @@ public class UserService {
     @Autowired
     private BasketRepository basketRepository;
     Double net = null;
+    Double discount = null;
+
     public Basket basket(Basket basket) {
         System.out.println(basket);
      // Basket basketExists = basketRepository.findBasketByID(basket.getID());
@@ -26,26 +28,27 @@ public class UserService {
             throw new BadRequestException(basket.getID()+ " does not exists.");
         }*/
         if(userExists.getUserType().equals("Employee") && basket.getIncludeGrocery()==false) {
-             net = basket.getBill() * 0.3;
+             discount = basket.getBill() * 0.3;
         }
      else if(userExists.getUserType().equals("Affiliate") && basket.getIncludeGrocery()==false) {
-            net = basket.getBill() * 0.1;
+            discount = basket.getBill() * 0.1;
         }
       else if(userExists.getUserType().equals("Customer") && basket.getIncludeGrocery()==false) {
             LocalDate today = LocalDate.now();
 
             Period p = Period.between(userExists.getJoinDate(), today);
             if (p.getYears() > 2) {
-                net = basket.getBill() * 0.5;
+                discount = basket.getBill() * 0.5;
             }
         }
           else if(basket.getBill() >= 100){
-             net = basket.getBill() % 100 * 0.05;
+             discount = basket.getBill() % 100 * 0.05;
           }
           else{
-              net = basket.getBill();
+              discount = basket.getBill();
         }
           basket.setAccount(userExists);
+          net = basket.getBill() - discount;
           basket.setNet_payable(net);
           return basket;
         }

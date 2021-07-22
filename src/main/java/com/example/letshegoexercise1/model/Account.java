@@ -8,7 +8,6 @@ import java.util.List;
 @Table
 public class Account {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "account_id", nullable = false)
     private Integer accountId;
     private String userType;
